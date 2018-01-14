@@ -39,4 +39,9 @@ return [
     'Slots'                                => 'Слоти',
     'Create Slot'                          => 'Додати слот',
     'Update Slot: {nameAttribute}'         => 'Оновити слот: {nameAttribute}',
+
+    //Stotage Ports
+    'Storage Ports'                        => 'Роз\'єми для накопичувачів',
+    'Create Storage Port'                  => 'Додати роз\'єм',
+    'Update Storage Port: {nameAttribute}' => 'Оновити роз\'єм: {nameAttribute}',
 ];
