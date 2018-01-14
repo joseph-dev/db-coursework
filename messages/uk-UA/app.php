@@ -13,5 +13,10 @@ return [
     // Manufacturers
     'Manufacturers'                        => 'Виробники',
     'Create Manufacturer'                  => 'Додати виробника',
-    'Update Manufacturer: {nameAttribute}' => 'Оновити виробника: {nameAttribute}'
+    'Update Manufacturer: {nameAttribute}' => 'Оновити виробника: {nameAttribute}',
+
+    //Form Factors
+    'Form Factors'                         => 'Форм-фактори',
+    'Create Form Factor'                   => 'Додати форм-фактор',
+    'Update Form Factor: {nameAttribute}'  => 'Оновити форм-фактор: {nameAttribute}',
 ];
