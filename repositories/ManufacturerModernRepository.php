@@ -6,7 +6,7 @@ use app\models\Manufacturer;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
 
-class ManufacturerModernRepository extends BaseRepository
+class ManufacturerModernRepository extends BaseModernRepository
 {
     /**
      * @param $id

@@ -7,7 +7,7 @@ use app\models\Manufacturer;
 use yii\base\Model;
 use yii\data\SqlDataProvider;
 
-class ManufacturerLegacyRepository extends BaseRepository
+class ManufacturerLegacyRepository extends BaseLegacyRepository
 {
     protected $tableName;
 
@@ -17,6 +17,14 @@ class ManufacturerLegacyRepository extends BaseRepository
     public function __construct()
     {
         $this->tableName = Manufacturer::tableName();
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getModelInstance()
+    {
+        return new Manufacturer();
     }
 
     /**
@@ -31,7 +39,7 @@ class ManufacturerLegacyRepository extends BaseRepository
             return null;
         }
 
-        $model = new Manufacturer();
+        $model = $this->getModelInstance();
         $model->setAttributes($data);
         $model->id = (int)$data['id'];
 
