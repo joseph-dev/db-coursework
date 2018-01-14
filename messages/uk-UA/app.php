@@ -19,4 +19,9 @@ return [
     'Form Factors'                         => 'Форм-фактори',
     'Create Form Factor'                   => 'Додати форм-фактор',
     'Update Form Factor: {nameAttribute}'  => 'Оновити форм-фактор: {nameAttribute}',
+
+    //Chipsets
+    'Chipsets'                             => 'Чіпсети',
+    'Create Chipset'                       => 'Додати чіпсет',
+    'Update Chipset: {nameAttribute}'      => 'Оновити чіпсет: {nameAttribute}',
 ];
