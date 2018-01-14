@@ -10,8 +10,7 @@ use Yii;
  * @property int $id
  * @property string $name
  *
- * @property MotherboadrsXExternalPorts[] $motherboadrsXExternalPorts
- * @property Motherboards[] $motherboards
+ * @property Motherboard[] $motherboards
  */
 class ExternalPort extends \yii\db\ActiveRecord
 {
@@ -40,7 +39,7 @@ class ExternalPort extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
+            'id'   => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
         ];
     }
@@ -48,16 +47,9 @@ class ExternalPort extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMotherboadrsXExternalPorts()
-    {
-        return $this->hasMany(MotherboadrsXExternalPorts::className(), ['external_port_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getMotherboards()
     {
-        return $this->hasMany(Motherboards::className(), ['id' => 'motherboard_id'])->viaTable('motherboadrs_x_external_ports', ['external_port_id' => 'id']);
+        return $this->hasMany(Motherboard::className(),
+            ['id' => 'motherboard_id'])->viaTable('motherboadrs_x_external_ports', ['external_port_id' => 'id']);
     }
 }

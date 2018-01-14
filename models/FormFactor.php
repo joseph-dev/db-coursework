@@ -10,7 +10,7 @@ use Yii;
  * @property int $id
  * @property string $name
  *
- * @property Motherboards[] $motherboards
+ * @property Motherboard[] $motherboards
  */
 class FormFactor extends \yii\db\ActiveRecord
 {
@@ -39,7 +39,7 @@ class FormFactor extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
+            'id'   => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
         ];
     }
@@ -49,6 +49,6 @@ class FormFactor extends \yii\db\ActiveRecord
      */
     public function getMotherboards()
     {
-        return $this->hasMany(Motherboards::className(), ['form_factor_id' => 'id']);
+        return $this->hasMany(Motherboard::className(), ['form_factor_id' => 'id']);
     }
 }
