@@ -12,14 +12,7 @@ class m180110_105138_create_slots_table extends Migration
      */
     public function up()
     {
-        if (APP_MODE === 'modern') {
-
-            $this->createTable('slots', [
-                'id'   => $this->primaryKey(),
-                'name' => $this->string()->notNull()
-            ]);
-
-        } elseif (APP_MODE === 'legacy') {
+        if (APP_MODE === 'legacy') {
 
             $this->execute(
                 'CREATE TABLE `slots` (
@@ -27,6 +20,13 @@ class m180110_105138_create_slots_table extends Migration
                     `name` varchar(255) NOT NULL
                 )'
             );
+
+        } else {
+
+            $this->createTable('slots', [
+                'id'   => $this->primaryKey(),
+                'name' => $this->string()->notNull()
+            ]);
 
         }
     }
@@ -36,15 +36,15 @@ class m180110_105138_create_slots_table extends Migration
      */
     public function down()
     {
-        if (APP_MODE === 'modern') {
-
-            $this->dropTable('slots');
-
-        } elseif (APP_MODE === 'legacy') {
+        if (APP_MODE === 'legacy') {
 
             $this->execute(
                 'DROP TABLE `slots`'
             );
+
+        } else {
+
+            $this->dropTable('slots');
 
         }
     }

@@ -12,14 +12,7 @@ class m180110_104136_create_ram_types_table extends Migration
      */
     public function up()
     {
-        if (APP_MODE === 'modern') {
-
-            $this->createTable('ram_types', [
-                'id'   => $this->primaryKey(),
-                'name' => $this->string()->notNull()
-            ]);
-
-        } elseif (APP_MODE === 'legacy') {
+        if (APP_MODE === 'legacy') {
 
             $this->execute(
                 'CREATE TABLE `ram_types` (
@@ -27,6 +20,13 @@ class m180110_104136_create_ram_types_table extends Migration
                     `name` varchar(255) NOT NULL
                 )'
             );
+
+        } else {
+
+            $this->createTable('ram_types', [
+                'id'   => $this->primaryKey(),
+                'name' => $this->string()->notNull()
+            ]);
 
         }
     }
@@ -36,15 +36,15 @@ class m180110_104136_create_ram_types_table extends Migration
      */
     public function down()
     {
-        if (APP_MODE === 'modern') {
-
-            $this->dropTable('ram_types');
-
-        } elseif (APP_MODE === 'legacy') {
+        if (APP_MODE === 'legacy') {
 
             $this->execute(
                 'DROP TABLE `ram_types`'
             );
+
+        } else {
+
+            $this->dropTable('ram_types');
 
         }
     }

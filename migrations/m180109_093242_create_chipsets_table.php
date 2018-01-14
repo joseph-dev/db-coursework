@@ -12,14 +12,7 @@ class m180109_093242_create_chipsets_table extends Migration
      */
     public function up()
     {
-        if (APP_MODE === 'modern') {
-
-            $this->createTable('chipsets', [
-                'id'   => $this->primaryKey(),
-                'name' => $this->string()->notNull(),
-            ]);
-
-        } elseif (APP_MODE === 'legacy') {
+        if (APP_MODE === 'legacy') {
 
             $this->execute(
                 'CREATE TABLE `chipsets` (
@@ -27,6 +20,13 @@ class m180109_093242_create_chipsets_table extends Migration
                     `name` varchar(255) NOT NULL
                 )'
             );
+
+        } else {
+
+            $this->createTable('chipsets', [
+                'id'   => $this->primaryKey(),
+                'name' => $this->string()->notNull(),
+            ]);
 
         }
     }
@@ -36,15 +36,15 @@ class m180109_093242_create_chipsets_table extends Migration
      */
     public function down()
     {
-        if (APP_MODE === 'modern') {
-
-            $this->dropTable('chipsets');
-
-        } elseif (APP_MODE === 'legacy') {
+        if (APP_MODE === 'legacy') {
 
             $this->execute(
                 'DROP TABLE `chipsets`'
             );
+
+        } else {
+
+            $this->dropTable('chipsets');
 
         }
     }

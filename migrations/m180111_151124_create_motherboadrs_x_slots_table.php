@@ -12,7 +12,23 @@ class m180111_151124_create_motherboadrs_x_slots_table extends Migration
      */
     public function up()
     {
-        if (APP_MODE === 'modern') {
+        if (APP_MODE === 'legacy') {
+
+            $this->execute(
+                'CREATE TABLE `motherboadrs_x_slots` (
+                    `motherboard_id` int(11) NOT NULL,
+                    `slot_id` int(11) NOT NULL,
+                    `quantity` int(11) NOT NULL
+                )'
+            );
+
+            $this->execute('ALTER TABLE `motherboadrs_x_slots` ADD UNIQUE INDEX `idx-unique-mb_x_slots-mb_id-slot_id` (`motherboard_id`, `slot_id`)');
+
+            $this->execute('ALTER TABLE `motherboadrs_x_slots` ADD CONSTRAINT `fk-motherboadrs_x_slots-motherboard_id` FOREIGN KEY (`motherboard_id`) REFERENCES `motherboards` (`id`) ON DELETE CASCADE');
+
+            $this->execute('ALTER TABLE `motherboadrs_x_slots` ADD CONSTRAINT `fk-motherboadrs_x_slots-slot_id` FOREIGN KEY (`slot_id`) REFERENCES `slots` (`id`) ON DELETE CASCADE');
+
+        } else {
 
             $this->createTable('motherboadrs_x_slots', [
                 'motherboard_id' => $this->integer()->notNull(),
@@ -45,22 +61,6 @@ class m180111_151124_create_motherboadrs_x_slots_table extends Migration
                 'CASCADE'
             );
 
-        } elseif (APP_MODE === 'legacy') {
-
-            $this->execute(
-                'CREATE TABLE `motherboadrs_x_slots` (
-                    `motherboard_id` int(11) NOT NULL,
-                    `slot_id` int(11) NOT NULL,
-                    `quantity` int(11) NOT NULL
-                )'
-            );
-
-            $this->execute('ALTER TABLE `motherboadrs_x_slots` ADD UNIQUE INDEX `idx-unique-mb_x_slots-mb_id-slot_id` (`motherboard_id`, `slot_id`)');
-
-            $this->execute('ALTER TABLE `motherboadrs_x_slots` ADD CONSTRAINT `fk-motherboadrs_x_slots-motherboard_id` FOREIGN KEY (`motherboard_id`) REFERENCES `motherboards` (`id`) ON DELETE CASCADE');
-
-            $this->execute('ALTER TABLE `motherboadrs_x_slots` ADD CONSTRAINT `fk-motherboadrs_x_slots-slot_id` FOREIGN KEY (`slot_id`) REFERENCES `slots` (`id`) ON DELETE CASCADE');
-
         }
     }
 
@@ -69,15 +69,15 @@ class m180111_151124_create_motherboadrs_x_slots_table extends Migration
      */
     public function down()
     {
-        if (APP_MODE === 'modern') {
-
-            $this->dropTable('motherboadrs_x_slots');
-
-        } elseif (APP_MODE === 'legacy') {
+        if (APP_MODE === 'legacy') {
 
             $this->execute(
                 'DROP TABLE `motherboadrs_x_slots`'
             );
+
+        } else {
+
+            $this->dropTable('motherboadrs_x_slots');
 
         }
     }

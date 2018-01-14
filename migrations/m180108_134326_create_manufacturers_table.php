@@ -13,14 +13,7 @@ class m180108_134326_create_manufacturers_table extends Migration
      */
     public function up()
     {
-        if (APP_MODE === 'modern') {
-
-            $this->createTable('manufacturers', [
-                'id'   => $this->primaryKey(),
-                'name' => $this->string()->notNull(),
-            ]);
-
-        } elseif (APP_MODE === 'legacy') {
+        if (APP_MODE === 'legacy') {
 
             $this->execute(
                 'CREATE TABLE `manufacturers` (
@@ -28,6 +21,13 @@ class m180108_134326_create_manufacturers_table extends Migration
                     `name` varchar(255) NOT NULL
                 )'
             );
+
+        } else {
+
+            $this->createTable('manufacturers', [
+                'id'   => $this->primaryKey(),
+                'name' => $this->string()->notNull(),
+            ]);
 
         }
     }
@@ -37,15 +37,15 @@ class m180108_134326_create_manufacturers_table extends Migration
      */
     public function down()
     {
-        if (APP_MODE === 'modern') {
-
-            $this->dropTable('manufacturers');
-
-        } elseif (APP_MODE === 'legacy') {
+        if (APP_MODE === 'legacy') {
 
             $this->execute(
                 'DROP TABLE `manufacturers`'
             );
+
+        } else {
+
+            $this->dropTable('manufacturers');
 
         }
     }

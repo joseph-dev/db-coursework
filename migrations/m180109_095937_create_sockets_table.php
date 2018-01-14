@@ -12,14 +12,7 @@ class m180109_095937_create_sockets_table extends Migration
      */
     public function up()
     {
-        if (APP_MODE === 'modern') {
-
-            $this->createTable('sockets', [
-                'id'   => $this->primaryKey(),
-                'name' => $this->string()->notNull()
-            ]);
-
-        } elseif (APP_MODE === 'legacy') {
+        if (APP_MODE === 'legacy') {
 
             $this->execute(
                 'CREATE TABLE `sockets` (
@@ -27,6 +20,13 @@ class m180109_095937_create_sockets_table extends Migration
                     `name` varchar(255) NOT NULL
                 )'
             );
+
+        } else {
+
+            $this->createTable('sockets', [
+                'id'   => $this->primaryKey(),
+                'name' => $this->string()->notNull()
+            ]);
 
         }
     }
@@ -36,15 +36,15 @@ class m180109_095937_create_sockets_table extends Migration
      */
     public function down()
     {
-        if (APP_MODE === 'modern') {
-
-            $this->dropTable('sockets');
-
-        } elseif (APP_MODE === 'legacy') {
+        if (APP_MODE === 'legacy') {
 
             $this->execute(
                 'DROP TABLE `sockets`'
             );
+
+        } else {
+
+            $this->dropTable('sockets');
 
         }
     }

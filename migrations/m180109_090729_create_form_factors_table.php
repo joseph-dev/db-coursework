@@ -12,14 +12,7 @@ class m180109_090729_create_form_factors_table extends Migration
      */
     public function up()
     {
-        if (APP_MODE === 'modern') {
-
-            $this->createTable('form_factors', [
-                'id'     => $this->primaryKey(),
-                'name'   => $this->string()->notNull()
-            ]);
-
-        } elseif (APP_MODE === 'legacy') {
+        if (APP_MODE === 'legacy') {
 
             $this->execute(
                 'CREATE TABLE `form_factors` (
@@ -27,6 +20,13 @@ class m180109_090729_create_form_factors_table extends Migration
                     `name` varchar(255) NOT NULL
                 )'
             );
+
+        } else {
+
+            $this->createTable('form_factors', [
+                'id'   => $this->primaryKey(),
+                'name' => $this->string()->notNull()
+            ]);
 
         }
     }
@@ -36,15 +36,15 @@ class m180109_090729_create_form_factors_table extends Migration
      */
     public function down()
     {
-        if (APP_MODE === 'modern') {
-
-            $this->dropTable('form_factors');
-
-        } elseif (APP_MODE === 'legacy') {
+        if (APP_MODE === 'legacy') {
 
             $this->execute(
                 'DROP TABLE `form_factors`'
             );
+
+        } else {
+
+            $this->dropTable('form_factors');
 
         }
     }
