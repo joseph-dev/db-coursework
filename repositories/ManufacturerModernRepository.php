@@ -23,7 +23,7 @@ class ManufacturerModernRepository extends BaseModernRepository
      */
     public function create($model)
     {
-        return $model->save();
+        return $model->save(false);
     }
 
     /**
@@ -32,7 +32,7 @@ class ManufacturerModernRepository extends BaseModernRepository
      */
     public function update($model)
     {
-        return $model->save();
+        return $model->save(false);
     }
 
     /**
