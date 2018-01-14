@@ -11,8 +11,8 @@ return [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
-    ],  
-    'language' => 'en-US',
+    ],
+    'language' => 'uk-UA',
     'components' => [
         'db' => $db,
         'mailer' => [

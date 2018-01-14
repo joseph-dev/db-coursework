@@ -9,6 +9,16 @@ use app\models\ContactForm;
 class SiteController extends BaseController
 {
     /**
+     * @param \yii\base\Action $action
+     * @return bool
+     */
+    public function beforeAction($action)
+    {
+        $this->view->params['activeMenuItem'] = 'home';
+        return parent::beforeAction($action);
+    }
+
+    /**
      * Displays homepage.
      *
      * @return string
@@ -16,33 +26,5 @@ class SiteController extends BaseController
     public function actionIndex()
     {
         return $this->render('index');
-    }
-
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
     }
 }
