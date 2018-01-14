@@ -8,7 +8,6 @@ use Yii;
 use app\models\Manufacturer;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * ManufacturerController implements the CRUD actions for Manufacturer model.
@@ -38,21 +37,6 @@ class ManufacturerController extends Controller
         }
 
         parent::__construct($id, $module, $config);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class'   => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
     }
 
     /**
