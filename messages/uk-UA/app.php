@@ -29,4 +29,9 @@ return [
     'Sockets'                              => 'Сокети',
     'Create Socket'                        => 'Додати сокет',
     'Update Socket: {nameAttribute}'       => 'Оновити сокет: {nameAttribute}',
+
+    //Ram Types
+    'Ram Types'                            => 'Типи оперативної пам\'яті',
+    'Create Ram Type'                      => 'Додати тип',
+    'Update Ram Type: {nameAttribute}'     => 'Оновити тип: {nameAttribute}',
 ];
