@@ -24,4 +24,9 @@ return [
     'Chipsets'                             => 'Чіпсети',
     'Create Chipset'                       => 'Додати чіпсет',
     'Update Chipset: {nameAttribute}'      => 'Оновити чіпсет: {nameAttribute}',
+
+    //Sockets
+    'Sockets'                              => 'Сокети',
+    'Create Socket'                        => 'Додати сокет',
+    'Update Socket: {nameAttribute}'       => 'Оновити сокет: {nameAttribute}',
 ];

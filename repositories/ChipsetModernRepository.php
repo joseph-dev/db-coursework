@@ -73,4 +73,13 @@ class ChipsetModernRepository extends BaseModernRepository
             ],
         ]);
     }
+
+    /**
+     * @param $socket
+     * @return mixed
+     */
+    public function findBySocket($socket)
+    {
+        return $socket->chipsets;
+    }
 }

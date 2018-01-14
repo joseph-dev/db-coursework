@@ -2,12 +2,12 @@
 
 namespace app\repositories;
 
-use app\models\Chipset;
+use app\models\Socket;
 use Yii;
 use yii\base\Model;
 use yii\data\SqlDataProvider;
 
-class ChipsetLegacyRepository extends BaseLegacyRepository
+class SocketLegacyRepository extends BaseLegacyRepository
 {
     protected $tableName;
 
@@ -16,7 +16,7 @@ class ChipsetLegacyRepository extends BaseLegacyRepository
      */
     public function __construct()
     {
-        $this->tableName = Chipset::tableName();
+        $this->tableName = Socket::tableName();
     }
 
     /**
@@ -24,7 +24,7 @@ class ChipsetLegacyRepository extends BaseLegacyRepository
      */
     protected function getModelInstance()
     {
-        return new Chipset();
+        return new Socket();
     }
 
     /**
@@ -135,31 +135,72 @@ class ChipsetLegacyRepository extends BaseLegacyRepository
     }
 
     /**
-     * @param $socket
-     * @return mixed
+     * @param $model
+     * @param $data
+     * @return bool
      */
-    public function findBySocket($socket)
+    public function createWith($model, $data)
     {
-        $data = Yii::$app->db
-            ->createCommand("
-                SELECT chipsets.id, chipsets.name FROM {$this->tableName}
-                JOIN chipsets_x_sockets ON chipsets_x_sockets.chipset_id = chipsets.id
-                WHERE chipsets_x_sockets.socket_id = {$socket->id}
-            ")->queryAll();
+        $transaction = Yii::$app->db->beginTransaction();
 
-        if (!$data) {
-            return [];
+        try {
+
+            if (!$this->create($model)) {
+                $transaction->rollBack();
+                return false;
+            }
+
+            if (isset($data['chipsets']) && is_array($data['chipsets'])) {
+
+                foreach ($data['chipsets'] as $chipset) {
+                    Yii::$app->db->createCommand("INSERT INTO chipsets_x_sockets (chipset_id, socket_id) VALUES({$chipset}, {$model->id})")->execute();
+                }
+
+            }
+
+            $transaction->commit();
+            return true;
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            return false;
         }
+    }
 
-        $result = [];
+    /**
+     * @param $model
+     * @param $data
+     * @return bool
+     */
+    public function updateWith($model, $data)
+    {
+        $transaction = Yii::$app->db->beginTransaction();
 
-        foreach ($data as $datum) {
-            $model = $this->getModelInstance();
-            $model->setAttributes($datum);
-            $model->id = (int)$datum['id'];
-            $result[] = $model;
+        try {
+
+            if (!$this->update($model)) {
+                $transaction->rollBack();
+                return false;
+            }
+
+            if (isset($data['chipsets'])) {
+
+                Yii::$app->db->createCommand("DELETE FROM chipsets_x_sockets WHERE socket_id = {$model->id}")->execute();
+
+                if (is_array($data['chipsets'])) {
+
+                    foreach ($data['chipsets'] as $chipset) {
+                        Yii::$app->db->createCommand("INSERT INTO chipsets_x_sockets (chipset_id, socket_id) VALUES({$chipset}, {$model->id})")->execute();
+                    }
+
+                }
+
+            }
+
+            $transaction->commit();
+            return true;
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            return false;
         }
-
-        return $result;
     }
 }
