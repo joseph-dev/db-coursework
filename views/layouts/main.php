@@ -53,7 +53,7 @@ AppAsset::register($this);
                     <a href="<?= Url::to(['chipset/index']); ?>" class="list-group-item <?= $activeMenuItem === 'chipset' ? 'active' : '' ?>">Чіпсети</a>
                     <a href="<?= Url::to(['socket/index']); ?>" class="list-group-item <?= $activeMenuItem === 'socket' ? 'active' : '' ?>">Сокети</a>
                     <a href="<?= Url::to(['ram-type/index']); ?>" class="list-group-item <?= $activeMenuItem === 'ram-type' ? 'active' : '' ?>">Типи оперативної пам'яті</a>
-                    <a href="<?= Url::to(['slots/index']); ?>" class="list-group-item <?= $activeMenuItem === 'slots' ? 'active' : '' ?>">Слоти</a>
+                    <a href="<?= Url::to(['slot/index']); ?>" class="list-group-item <?= $activeMenuItem === 'slot' ? 'active' : '' ?>">Слоти</a>
                     <a href="<?= Url::to(['storage-port/index']); ?>" class="list-group-item <?= $activeMenuItem === 'storage-port' ? 'active' : '' ?>">Роз'єми для накопичувачів</a>
                     <a href="<?= Url::to(['external-port/index']); ?>" class="list-group-item <?= $activeMenuItem === 'external-port' ? 'active' : '' ?>">Зовнішні роз'єми</a>
                     <a href="<?= Url::to(['motherboard/index']); ?>" class="list-group-item <?= $activeMenuItem === 'motherboard' ? 'active' : '' ?>">Материнські плати</a>

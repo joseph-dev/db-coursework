@@ -34,4 +34,9 @@ return [
     'Ram Types'                            => 'Типи оперативної пам\'яті',
     'Create Ram Type'                      => 'Додати тип',
     'Update Ram Type: {nameAttribute}'     => 'Оновити тип: {nameAttribute}',
+
+    //Ram Types
+    'Slots'                                => 'Слоти',
+    'Create Slot'                          => 'Додати слот',
+    'Update Slot: {nameAttribute}'         => 'Оновити слот: {nameAttribute}',
 ];
