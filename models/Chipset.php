@@ -10,9 +10,8 @@ use Yii;
  * @property int $id
  * @property string $name
  *
- * @property ChipsetsXSockets[] $chipsetsXSockets
- * @property Sockets[] $sockets
- * @property Motherboards[] $motherboards
+ * @property Socket[] $sockets
+ * @property Motherboard[] $motherboards
  */
 class Chipset extends \yii\db\ActiveRecord
 {
@@ -41,17 +40,10 @@ class Chipset extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
+            'id'      => Yii::t('app', 'ID'),
+            'name'    => Yii::t('app', 'Name'),
+            'sockets' => Yii::t('app', 'Sockets'),
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getChipsetsXSockets()
-    {
-        return $this->hasMany(ChipsetsXSockets::className(), ['chipset_id' => 'id']);
     }
 
     /**
@@ -59,7 +51,8 @@ class Chipset extends \yii\db\ActiveRecord
      */
     public function getSockets()
     {
-        return $this->hasMany(Sockets::className(), ['id' => 'socket_id'])->viaTable('chipsets_x_sockets', ['chipset_id' => 'id']);
+        return $this->hasMany(Socket::className(), ['id' => 'socket_id'])->viaTable('chipsets_x_sockets',
+            ['chipset_id' => 'id']);
     }
 
     /**
@@ -67,6 +60,6 @@ class Chipset extends \yii\db\ActiveRecord
      */
     public function getMotherboards()
     {
-        return $this->hasMany(Motherboards::className(), ['chipset_id' => 'id']);
+        return $this->hasMany(Motherboard::className(), ['chipset_id' => 'id']);
     }
 }

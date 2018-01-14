@@ -3,6 +3,7 @@
 namespace app\repositories;
 
 use app\models\Chipset;
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
 
@@ -72,6 +73,76 @@ class ChipsetModernRepository extends BaseModernRepository
                 ]
             ],
         ]);
+    }
+
+    /**
+     * @param $model
+     * @param $data
+     * @return bool
+     */
+    public function createWith($model, $data)
+    {
+        $transaction = Yii::$app->db->beginTransaction();
+
+        try {
+
+            if (!$this->create($model)) {
+                $transaction->rollBack();
+                return false;
+            }
+
+            if (isset($data['sockets']) && is_array($data['sockets'])) {
+
+                foreach ($data['sockets'] as $socket) {
+                    Yii::$app->db->createCommand("INSERT INTO chipsets_x_sockets (chipset_id, socket_id) VALUES({$model->id}, {$socket})")->execute();
+                }
+
+            }
+
+            $transaction->commit();
+            return true;
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            return false;
+        }
+    }
+
+    /**
+     * @param $model
+     * @param $data
+     * @return bool
+     */
+    public function updateWith($model, $data)
+    {
+        $transaction = Yii::$app->db->beginTransaction();
+
+        try {
+
+            if (!$this->update($model)) {
+                $transaction->rollBack();
+                return false;
+            }
+
+            if (isset($data['sockets'])) {
+
+                Yii::$app->db->createCommand("DELETE FROM chipsets_x_sockets WHERE chipset_id = {$model->id}")->execute();
+
+                if (is_array($data['sockets'])) {
+
+                    foreach ($data['sockets'] as $socket) {
+                        Yii::$app->db->createCommand("INSERT INTO chipsets_x_sockets (chipset_id, socket_id) VALUES({$model->id}, {$socket})")->execute();
+                    }
+
+                }
+
+            }
+
+            $transaction->commit();
+            return true;
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            return false;
+        }
     }
 
     /**

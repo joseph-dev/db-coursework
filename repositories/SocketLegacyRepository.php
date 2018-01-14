@@ -203,4 +203,33 @@ class SocketLegacyRepository extends BaseLegacyRepository
             return false;
         }
     }
+
+    /**
+     * @param $chipset
+     * @return mixed
+     */
+    public function findByChipset($chipset)
+    {
+        $data = Yii::$app->db
+            ->createCommand("
+                SELECT {$this->tableName}.id, {$this->tableName}.name FROM {$this->tableName}
+                JOIN chipsets_x_sockets ON chipsets_x_sockets.socket_id = {$this->tableName}.id
+                WHERE chipsets_x_sockets.chipset_id = {$chipset->id}
+            ")->queryAll();
+
+        if (!$data) {
+            return [];
+        }
+
+        $result = [];
+
+        foreach ($data as $datum) {
+            $model = $this->getModelInstance();
+            $model->setAttributes($datum);
+            $model->id = (int)$datum['id'];
+            $result[] = $model;
+        }
+
+        return $result;
+    }
 }

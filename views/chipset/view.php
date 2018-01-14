@@ -5,6 +5,7 @@ use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Chipset */
+/* @var $sockets app\models\Socket[] */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Chipsets'), 'url' => ['index']];
@@ -30,6 +31,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
+            [
+                'attribute' => 'sockets',
+                'value'     => function () use ($sockets) {
+                    $array = \yii\helpers\ArrayHelper::getColumn($sockets, 'name');
+                    return trim(implode(', ', $array), ', ');
+                }
+            ]
         ],
     ]) ?>
 

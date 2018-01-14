@@ -4,8 +4,11 @@ namespace app\controllers;
 
 use app\repositories\ChipsetLegacyRepository;
 use app\repositories\ChipsetModernRepository;
+use app\repositories\SocketLegacyRepository;
+use app\repositories\SocketModernRepository;
 use Yii;
 use app\models\Chipset;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -20,6 +23,11 @@ class ChipsetController extends Controller
     protected $chipsetRepository;
 
     /**
+     * @var
+     */
+    protected $socketRepository;
+
+    /**
      * FormFactorController constructor.
      * @param string $id
      * @param $module
@@ -32,8 +40,10 @@ class ChipsetController extends Controller
          */
         if (APP_MODE === 'legacy') {
             $this->chipsetRepository = new ChipsetLegacyRepository();
+            $this->socketRepository = new SocketLegacyRepository();
         } else {
             $this->chipsetRepository = new ChipsetModernRepository();
+            $this->socketRepository = new SocketModernRepository();
         }
 
         parent::__construct($id, $module, $config);
@@ -70,8 +80,12 @@ class ChipsetController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $sockets = $this->socketRepository->findByChipset($model);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model'   => $model,
+            'sockets' => $sockets
         ]);
     }
 
@@ -83,21 +97,29 @@ class ChipsetController extends Controller
     public function actionCreate()
     {
         $model = new Chipset();
+        $socketDictionary = $this->getSocketDictionary();
+        $activeSockets = [];
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
-            if ($this->chipsetRepository->create($model)) {
+            $sockets = Yii::$app->request->post('Chipset')['sockets'];
+
+            if ($this->chipsetRepository->createWith($model, ['sockets' => $sockets])) {
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('create', [
-                    'model' => $model,
+                    'model'            => $model,
+                    'socketDictionary' => $socketDictionary,
+                    'activeSockets'    => $activeSockets,
                 ]);
             }
 
         }
 
         return $this->render('create', [
-            'model' => $model,
+            'model'            => $model,
+            'socketDictionary' => $socketDictionary,
+            'activeSockets'    => $activeSockets,
         ]);
     }
 
@@ -111,21 +133,29 @@ class ChipsetController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $socketDictionary = $this->getSocketDictionary();
+        $activeSockets = ArrayHelper::getColumn($this->socketRepository->findByChipset($model), 'id');
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
-            if ($this->chipsetRepository->update($model)) {
+            $sockets = Yii::$app->request->post('Chipset')['sockets'];
+
+            if ($this->chipsetRepository->updateWith($model, ['sockets' => $sockets])) {
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
-                    'model' => $model,
+                    'model'            => $model,
+                    'socketDictionary' => $socketDictionary,
+                    'activeSockets'    => $activeSockets,
                 ]);
             }
 
         }
 
         return $this->render('update', [
-            'model' => $model,
+            'model'            => $model,
+            'socketDictionary' => $socketDictionary,
+            'activeSockets'    => $activeSockets,
         ]);
     }
 
@@ -158,5 +188,13 @@ class ChipsetController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    /**
+     * @return array
+     */
+    protected function getSocketDictionary()
+    {
+        return ArrayHelper::map($this->socketRepository->all(), 'id', 'name');
     }
 }
