@@ -18,6 +18,14 @@ class ManufacturerModernRepository extends BaseModernRepository
     }
 
     /**
+     * @return Manufacturer[]
+     */
+    public function all()
+    {
+        return Manufacturer::find()->all();
+    }
+
+    /**
      * @param $model ActiveRecord
      * @return bool
      */

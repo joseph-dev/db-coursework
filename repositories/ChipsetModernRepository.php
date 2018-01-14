@@ -18,6 +18,14 @@ class ChipsetModernRepository extends BaseModernRepository
     }
 
     /**
+     * @return ActiveRecord[]
+     */
+    public function all()
+    {
+        return Chipset::find()->all();
+    }
+
+    /**
      * @param $model ActiveRecord
      * @return bool
      */

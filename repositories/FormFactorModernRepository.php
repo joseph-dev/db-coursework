@@ -18,6 +18,14 @@ class FormFactorModernRepository extends BaseModernRepository
     }
 
     /**
+     * @return ActiveRecord[]
+     */
+    public function all()
+    {
+        return FormFactor::find()->all();
+    }
+
+    /**
      * @param $model ActiveRecord
      * @return bool
      */

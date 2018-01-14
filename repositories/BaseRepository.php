@@ -14,6 +14,11 @@ abstract class BaseRepository
     public abstract function find($id);
 
     /**
+     * @return ActiveRecord[]
+     */
+    public abstract function all();
+
+    /**
      * @param $model
      * @return bool
      */

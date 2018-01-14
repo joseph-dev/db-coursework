@@ -47,6 +47,29 @@ class ManufacturerLegacyRepository extends BaseLegacyRepository
     }
 
     /**
+     * @return ActiveRecord[]
+     */
+    public function all()
+    {
+        $data = Yii::$app->db->createCommand("SELECT id, name FROM {$this->tableName}")->queryAll();
+
+        if (!$data) {
+            return [];
+        }
+
+        $result = [];
+
+        foreach ($data as $datum) {
+            $model = $this->getModelInstance();
+            $model->setAttributes($datum);
+            $model->id = (int)$datum['id'];
+            $result[] = $model;
+        }
+
+        return $result;
+    }
+
+    /**
      * @param $model Model
      * @return bool
      */
