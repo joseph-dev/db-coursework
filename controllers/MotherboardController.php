@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\MotherboardSearch;
 use app\repositories\ChipsetLegacyRepository;
 use app\repositories\ChipsetModernRepository;
 use app\repositories\FormFactorLegacyRepository;
@@ -101,10 +102,12 @@ class MotherboardController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = $this->motherboardRepository->dataProvider();
+        $searchModel = new MotherboardSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+            'searchModel'  => $searchModel,
         ]);
     }
 
