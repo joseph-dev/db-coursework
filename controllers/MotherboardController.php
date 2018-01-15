@@ -5,6 +5,8 @@ namespace app\controllers;
 use app\models\MotherboardSearch;
 use app\repositories\ChipsetLegacyRepository;
 use app\repositories\ChipsetModernRepository;
+use app\repositories\ExternalPortLegacyRepository;
+use app\repositories\ExternalPortModernRepository;
 use app\repositories\FormFactorLegacyRepository;
 use app\repositories\FormFactorModernRepository;
 use app\repositories\ManufacturerLegacyRepository;
@@ -13,8 +15,12 @@ use app\repositories\MotherboardLegacyRepository;
 use app\repositories\MotherboardModernRepository;
 use app\repositories\RamTypeLegacyRepository;
 use app\repositories\RamTypeModernRepository;
+use app\repositories\SlotLegacyRepository;
+use app\repositories\SlotModernRepository;
 use app\repositories\SocketLegacyRepository;
 use app\repositories\SocketModernRepository;
+use app\repositories\StoragePortLegacyRepository;
+use app\repositories\StoragePortModernRepository;
 use Yii;
 use app\models\Motherboard;
 use yii\helpers\ArrayHelper;
@@ -57,6 +63,21 @@ class MotherboardController extends Controller
     protected $ramTypeRepository;
 
     /**
+     * @var
+     */
+    protected $slotRepository;
+
+    /**
+     * @var
+     */
+    protected $storagePortRepository;
+
+    /**
+     * @var
+     */
+    protected $externalPortRepository;
+
+    /**
      * FormFactorController constructor.
      * @param string $id
      * @param $module
@@ -74,6 +95,9 @@ class MotherboardController extends Controller
             $this->chipsetRepository = new ChipsetLegacyRepository();
             $this->socketRepository = new SocketLegacyRepository();
             $this->ramTypeRepository = new RamTypeLegacyRepository();
+            $this->slotRepository = new SlotLegacyRepository();
+            $this->storagePortRepository = new StoragePortLegacyRepository();
+            $this->externalPortRepository = new ExternalPortLegacyRepository();
         } else {
             $this->motherboardRepository = new MotherboardModernRepository();
             $this->manufacturerRepository = new ManufacturerModernRepository();
@@ -81,6 +105,9 @@ class MotherboardController extends Controller
             $this->chipsetRepository = new ChipsetModernRepository();
             $this->socketRepository = new SocketModernRepository();
             $this->ramTypeRepository = new RamTypeModernRepository();
+            $this->slotRepository = new SlotModernRepository();
+            $this->storagePortRepository = new StoragePortModernRepository();
+            $this->externalPortRepository = new ExternalPortModernRepository();
         }
 
         parent::__construct($id, $module, $config);
@@ -120,11 +147,16 @@ class MotherboardController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
+
         $manufacturerName = $this->manufacturerRepository->find($model->manufacturer_id)->name;
         $formFactorName = $this->formFactorRepository->find($model->form_factor_id)->name;
         $chipsetName = $this->chipsetRepository->find($model->chipset_id)->name;
         $socketName = $this->socketRepository->find($model->socket_id)->name;
         $ramTypeName = $this->ramTypeRepository->find($model->ram_type_id)->name;
+
+        $slots = $this->motherboardRepository->findSlotsWithQuantitiesByMotherboard($model);
+        $storagePorts = $this->motherboardRepository->findStoragePortsWithQuantitiesByMotherboard($model);
+        $externalPorts = $this->motherboardRepository->findExternalPortsWithQuantitiesByMotherboard($model);
 
         return $this->render('view', [
             'model'            => $model,
@@ -133,6 +165,9 @@ class MotherboardController extends Controller
             'chipsetName'      => $chipsetName,
             'socketName'       => $socketName,
             'ramTypeName'      => $ramTypeName,
+            'slots'            => $slots,
+            'storagePorts'     => $storagePorts,
+            'externalPorts'    => $externalPorts,
         ]);
     }
 
@@ -156,9 +191,32 @@ class MotherboardController extends Controller
 
         $ramTypeDictionary = $this->getRamTypeDictionary();
 
+        $slotDictionary = $this->getSlotDictionary();
+        $storagePortDictionary = $this->getStoragePortDictionary();
+        $externalPortDictionary = $this->getExternalPortDictionary();
+
+        $slotQuantities = [];
+        $storagePortQuantities = [];
+        $externalPortQuantities = [];
+
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
-            if ($this->motherboardRepository->create($model)) {
+            $data['slots'] = $this->prepareQuantities(
+                Yii::$app->request->post('Motherboard')['slotTypes'],
+                Yii::$app->request->post('Motherboard')['slotQuantities']
+            );
+
+            $data['storagePorts'] = $this->prepareQuantities(
+                Yii::$app->request->post('Motherboard')['storagePortTypes'],
+                Yii::$app->request->post('Motherboard')['storagePortQuantities']
+            );
+
+            $data['externalPorts'] = $this->prepareQuantities(
+                Yii::$app->request->post('Motherboard')['externalPortTypes'],
+                Yii::$app->request->post('Motherboard')['externalPortQuantities']
+            );
+
+            if ($this->motherboardRepository->createWith($model, $data)) {
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('create', [
@@ -168,6 +226,12 @@ class MotherboardController extends Controller
                     'chipsetDictionary'      => $chipsetDictionary,
                     'socketDictionary'       => $socketDictionary,
                     'ramTypeDictionary'      => $ramTypeDictionary,
+                    'slotDictionary'         => $slotDictionary,
+                    'storagePortDictionary'  => $storagePortDictionary,
+                    'externalPortDictionary' => $externalPortDictionary,
+                    'slotQuantities'         => $slotQuantities,
+                    'storagePortQuantities'  => $storagePortQuantities,
+                    'externalPortQuantities' => $externalPortQuantities,
                 ]);
             }
 
@@ -180,6 +244,12 @@ class MotherboardController extends Controller
             'chipsetDictionary'      => $chipsetDictionary,
             'socketDictionary'       => $socketDictionary,
             'ramTypeDictionary'      => $ramTypeDictionary,
+            'slotDictionary'         => $slotDictionary,
+            'storagePortDictionary'  => $storagePortDictionary,
+            'externalPortDictionary' => $externalPortDictionary,
+            'slotQuantities'         => $slotQuantities,
+            'storagePortQuantities'  => $storagePortQuantities,
+            'externalPortQuantities' => $externalPortQuantities,
         ]);
     }
 
@@ -205,9 +275,32 @@ class MotherboardController extends Controller
 
         $ramTypeDictionary = $this->getRamTypeDictionary();
 
+        $slotDictionary = $this->getSlotDictionary();
+        $storagePortDictionary = $this->getStoragePortDictionary();
+        $externalPortDictionary = $this->getExternalPortDictionary();
+
+        $slotQuantities = $this->motherboardRepository->getSlotQuantitiesByMotherboard($model);
+        $storagePortQuantities = $this->motherboardRepository->getStoragePortQuantitiesByMotherboard($model);
+        $externalPortQuantities = $this->motherboardRepository->getExternalPortQuantitiesByMotherboard($model);
+
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
-            if ($this->motherboardRepository->update($model)) {
+            $data['slots'] = $this->prepareQuantities(
+                Yii::$app->request->post('Motherboard')['slotTypes'],
+                Yii::$app->request->post('Motherboard')['slotQuantities']
+            );
+
+            $data['storagePorts'] = $this->prepareQuantities(
+                Yii::$app->request->post('Motherboard')['storagePortTypes'],
+                Yii::$app->request->post('Motherboard')['storagePortQuantities']
+            );
+
+            $data['externalPorts'] = $this->prepareQuantities(
+                Yii::$app->request->post('Motherboard')['externalPortTypes'],
+                Yii::$app->request->post('Motherboard')['externalPortQuantities']
+            );
+
+            if ($this->motherboardRepository->updateWith($model, $data)) {
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
@@ -217,6 +310,12 @@ class MotherboardController extends Controller
                     'chipsetDictionary'      => $chipsetDictionary,
                     'socketDictionary'       => $socketDictionary,
                     'ramTypeDictionary'      => $ramTypeDictionary,
+                    'slotDictionary'         => $slotDictionary,
+                    'storagePortDictionary'  => $storagePortDictionary,
+                    'externalPortDictionary' => $externalPortDictionary,
+                    'slotQuantities'         => $slotQuantities,
+                    'storagePortQuantities'  => $storagePortQuantities,
+                    'externalPortQuantities' => $externalPortQuantities,
                 ]);
             }
 
@@ -229,6 +328,12 @@ class MotherboardController extends Controller
             'chipsetDictionary'      => $chipsetDictionary,
             'socketDictionary'       => $socketDictionary,
             'ramTypeDictionary'      => $ramTypeDictionary,
+            'slotDictionary'         => $slotDictionary,
+            'storagePortDictionary'  => $storagePortDictionary,
+            'externalPortDictionary' => $externalPortDictionary,
+            'slotQuantities'         => $slotQuantities,
+            'storagePortQuantities'  => $storagePortQuantities,
+            'externalPortQuantities' => $externalPortQuantities,
         ]);
     }
 
@@ -302,5 +407,55 @@ class MotherboardController extends Controller
     protected function getRamTypeDictionary()
     {
         return ArrayHelper::map($this->ramTypeRepository->all(), 'id', 'name');
+    }
+
+    /**
+     * @return array
+     */
+    protected function getSlotDictionary()
+    {
+        return ArrayHelper::map($this->slotRepository->all(), 'id', 'name');
+    }
+
+    /**
+     * @return array
+     */
+    protected function getStoragePortDictionary()
+    {
+        return ArrayHelper::map($this->storagePortRepository->all(), 'id', 'name');
+    }
+
+    /**
+     * @return array
+     */
+    protected function getExternalPortDictionary()
+    {
+        return ArrayHelper::map($this->externalPortRepository->all(), 'id', 'name');
+    }
+
+    /**
+     * @param $types
+     * @param $quantities
+     * @return array
+     */
+    protected function prepareQuantities($types, $quantities)
+    {
+        $result = [];
+
+        for ($i = 0; $i < count($types); $i++) {
+
+            if ((int)$quantities[$i] <= 0) {
+                continue;
+            }
+
+            if (isset($result[$types[$i]])) {
+                $result[$types[$i]] += (int)$quantities[$i];
+            } else {
+                $result[$types[$i]] = (int)$quantities[$i];
+            }
+
+        }
+
+        return $result;
     }
 }

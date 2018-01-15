@@ -9,6 +9,13 @@ use yii\helpers\Html;
 /* @var $chipsetDictionary array */
 /* @var $socketDictionary array */
 /* @var $ramTypeDictionary array */
+/* @var $slotDictionary array */
+/* @var $storagePortDictionary array */
+/* @var $externalPortDictionary array */
+/* @var $slotQuantities array */
+/* @var $slotQuantities array */
+/* @var $storagePortQuantities array */
+/* @var $externalPortQuantities array */
 
 $this->title = Yii::t('app', 'Update Motherboard: {nameAttribute}', [
     'nameAttribute' => $model->name,
@@ -28,6 +35,12 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
         'chipsetDictionary'      => $chipsetDictionary,
         'socketDictionary'       => $socketDictionary,
         'ramTypeDictionary'      => $ramTypeDictionary,
+        'slotDictionary'         => $slotDictionary,
+        'storagePortDictionary'  => $storagePortDictionary,
+        'externalPortDictionary' => $externalPortDictionary,
+        'slotQuantities'         => $slotQuantities,
+        'storagePortQuantities'  => $storagePortQuantities,
+        'externalPortQuantities' => $externalPortQuantities,
     ]) ?>
 
 </div>

@@ -14,6 +14,16 @@ $.motherboardForm = {
         _this.form.on('change', '#chipset', function (e) {
             _this.requestSockets($(this).val());
         });
+
+        _this.form.on('click', '.repeatable-block .duplicate', function (e) {
+            e.preventDefault();
+            _this.cloneRepeatable($(this));
+        });
+
+        _this.form.on('click', '.repeatable-block .remove', function (e) {
+            e.preventDefault();
+            _this.removeRepeatable($(this));
+        });
     },
 
     requestSockets: function (chipsetId) {
@@ -40,6 +50,21 @@ $.motherboardForm = {
         }
 
         _this.form.find('#socket').html(options);
+    },
+
+    cloneRepeatable: function (button) {
+        var repeatable = button.closest('.repeatable-block');
+        repeatable.after(repeatable.clone());
+    },
+
+    removeRepeatable: function (button) {
+        var block = button.closest('.form-group');
+        
+        if (block.find('.repeatable-block').length > 1) {
+            var repeatable = button.closest('.repeatable-block');
+            repeatable.remove();
+        }
+
     }
 };
 

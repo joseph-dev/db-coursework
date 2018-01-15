@@ -9,6 +9,12 @@ use yii\helpers\Html;
 /* @var $chipsetDictionary array */
 /* @var $socketDictionary array */
 /* @var $ramTypeDictionary array */
+/* @var $slotDictionary array */
+/* @var $storagePortDictionary array */
+/* @var $externalPortDictionary array */
+/* @var $slotQuantities array */
+/* @var $storagePortQuantities array */
+/* @var $externalPortQuantities array */
 
 $this->title = Yii::t('app', 'Create Motherboard');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Motherboards'), 'url' => ['index']];
@@ -25,6 +31,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'chipsetDictionary'      => $chipsetDictionary,
         'socketDictionary'       => $socketDictionary,
         'ramTypeDictionary'      => $ramTypeDictionary,
+        'slotDictionary'         => $slotDictionary,
+        'storagePortDictionary'  => $storagePortDictionary,
+        'externalPortDictionary' => $externalPortDictionary,
+        'slotQuantities'         => $slotQuantities,
+        'storagePortQuantities'  => $storagePortQuantities,
+        'externalPortQuantities' => $externalPortQuantities,
     ]) ?>
 
 </div>

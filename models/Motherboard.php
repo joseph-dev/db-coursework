@@ -34,6 +34,15 @@ use Yii;
  */
 class Motherboard extends \yii\db\ActiveRecord
 {
+    public $slotTypes;
+    public $slotQuantities;
+
+    public $storagePortTypes;
+    public $storagePortQuantities;
+
+    public $externalPortTypes;
+    public $externalPortQuantities;
+
     /**
      * @inheritdoc
      */
@@ -151,7 +160,7 @@ class Motherboard extends \yii\db\ActiveRecord
     public function getExternalPorts()
     {
         return $this->hasMany(ExternalPort::className(),
-            ['id' => 'external_port_id'])->viaTable('motherboadrs_x_external_ports', ['motherboard_id' => 'id']);
+            ['id' => 'external_port_id'])->viaTable('motherboards_x_external_ports', ['motherboard_id' => 'id']);
     }
 
     /**
@@ -159,7 +168,7 @@ class Motherboard extends \yii\db\ActiveRecord
      */
     public function getSlots()
     {
-        return $this->hasMany(Slot::className(), ['id' => 'slot_id'])->viaTable('motherboadrs_x_slots',
+        return $this->hasMany(Slot::className(), ['id' => 'slot_id'])->viaTable('motherboards_x_slots',
             ['motherboard_id' => 'id']);
     }
 
@@ -169,7 +178,7 @@ class Motherboard extends \yii\db\ActiveRecord
     public function getStoragePorts()
     {
         return $this->hasMany(StoragePort::className(),
-            ['id' => 'storage_port_id'])->viaTable('motherboadrs_x_storage_ports', ['motherboard_id' => 'id']);
+            ['id' => 'storage_port_id'])->viaTable('motherboards_x_storage_ports', ['motherboard_id' => 'id']);
     }
 
     /**

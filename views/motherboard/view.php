@@ -10,6 +10,9 @@ use yii\widgets\DetailView;
 /* @var $chipsetName string */
 /* @var $socketName string */
 /* @var $ramTypeName string */
+/* @var $slots array */
+/* @var $storagePorts array */
+/* @var $externalPorts array */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Motherboards'), 'url' => ['index']];
@@ -69,6 +72,45 @@ $this->params['breadcrumbs'][] = $this->title;
             'video',
             'height',
             'width',
+
+            [
+                'label' => 'Слоти',
+                'value' => function () use ($slots) {
+                    $result = '';
+
+                    foreach ($slots as $slot) {
+                        $result .= $slot['quantity'] . ' x ' . $slot['name'] . ', ';
+                    }
+
+                    return trim($result, ', ');
+                }
+            ],
+
+            [
+                'label' => 'Роз\'єми для накопичувачів',
+                'value' => function () use ($storagePorts) {
+                    $result = '';
+
+                    foreach ($storagePorts as $port) {
+                        $result .= $port['quantity'] . ' x ' . $port['name'] . ', ';
+                    }
+
+                    return trim($result, ', ');
+                }
+            ],
+
+            [
+                'label' => 'Зовнішні роз\'єми',
+                'value' => function () use ($externalPorts) {
+                    $result = '';
+
+                    foreach ($externalPorts as $port) {
+                        $result .= $port['quantity'] . ' x ' . $port['name'] . ', ';
+                    }
+
+                    return trim($result, ', ');
+                }
+            ],
         ],
     ]) ?>
 

@@ -23,6 +23,7 @@ $this->title = 'Курсова робота!';
                     <li>Мова розмітки гіпертекстових документів(<a target="_blank" href="https://www.w3.org/html/">HTML</a>)</li>
                     <li>Каскадні таблиці стилів(<a target="_blank" href="https://www.w3.org/Style/CSS/Overview.en.html">CSS</a>)</li>
                     <li>Мова програмування <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">JavaScript</a></li>
+                    <li>JavaScript-бібліотека <a target="_blank" href="https://jquery.com/">jQuery</a></li>
                     <li>CSS фреймворк <a target="_blank" href="http://getbootstrap.com/">Bootstrap</a></li>
                     <li>Мова програмування <a target="_blank" href="http://php.net/">PHP</a></li>
                     <li>PHP фреймворк <a target="_blank" href="http://www.yiiframework.com/">Yii2</a></li>
