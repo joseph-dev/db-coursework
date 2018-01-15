@@ -144,7 +144,13 @@ class MotherboardController extends Controller
         $manufacturerDictionary = $this->getManufacturerDictionary();
         $formFactorDictionary = $this->getFormFactorDictionary();
         $chipsetDictionary = $this->getChipsetDictionary();
-        $socketDictionary = $this->getSocketDictionary();
+
+        $socketDictionary = [];
+
+        if ($chipsetDictionary) {
+            $socketDictionary = $this->getSocketDictionary(key($chipsetDictionary));
+        }
+
         $ramTypeDictionary = $this->getRamTypeDictionary();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -187,7 +193,13 @@ class MotherboardController extends Controller
         $manufacturerDictionary = $this->getManufacturerDictionary();
         $formFactorDictionary = $this->getFormFactorDictionary();
         $chipsetDictionary = $this->getChipsetDictionary();
-        $socketDictionary = $this->getSocketDictionary();
+
+        $socketDictionary = [];
+
+        if ($chipsetDictionary) {
+            $socketDictionary = $this->getSocketDictionary($model->chipset_id);
+        }
+
         $ramTypeDictionary = $this->getRamTypeDictionary();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -275,9 +287,10 @@ class MotherboardController extends Controller
     /**
      * @return array
      */
-    protected function getSocketDictionary()
+    protected function getSocketDictionary($id)
     {
-        return ArrayHelper::map($this->socketRepository->all(), 'id', 'name');
+        $chipset = $this->chipsetRepository->find($id);
+        return ArrayHelper::map($this->socketRepository->findByChipset($chipset), 'id', 'name');
     }
 
     /**

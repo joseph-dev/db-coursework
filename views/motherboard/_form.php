@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -23,9 +24,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'form_factor_id')->dropDownList($formFactorDictionary) ?>
 
-    <?= $form->field($model, 'chipset_id')->dropDownList($chipsetDictionary) ?>
+    <?= $form->field($model, 'chipset_id')->dropDownList($chipsetDictionary, ['id' => 'chipset']) ?>
 
-    <?= $form->field($model, 'socket_id')->dropDownList($socketDictionary) ?>
+    <?= $form->field($model, 'socket_id')->dropDownList($socketDictionary, ['id' => 'socket']) ?>
 
     <?= $form->field($model, 'ram_type_id')->dropDownList($ramTypeDictionary) ?>
 
@@ -50,5 +51,9 @@ use yii\widgets\ActiveForm;
     </div>
 
     <?php ActiveForm::end(); ?>
+
+    <script>
+        var ajaxGetSocketsByChipsetUrl = '<?= Url::to(['ajax/get-sockets-by-chipset', 'id' => null]) ?>';
+    </script>
 
 </div>

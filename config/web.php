@@ -48,6 +48,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'ajax/get-sockets-by-chipset/<id>' => 'ajax/get-sockets-by-chipset'
             ],
         ],
         'i18n' => [
