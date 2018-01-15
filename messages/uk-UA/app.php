@@ -9,6 +9,19 @@ return [
     // Fields
     'ID'                                    => 'Ідентифікатор',
     'Name'                                  => 'Назва',
+    'Manufacturer'                          => 'Виробник',
+    'Form Factor'                           => 'Форм-фактор',
+    'Chipset'                               => 'Чіпсет',
+    'Socket'                                => 'Сокет',
+    'Ram Type'                              => 'Тип оперативної пам\'яті',
+    'Ram Slots'                             => 'Кількість слотів під оперативну пам\'ять',
+    'Ram Max'                               => 'Максимальний обсяг оперативної пам\'яті (ГБ)',
+    'Ram Chanels'                           => 'Кількість каналів',
+    'Power Connector'                       => 'Конектор живлення',
+    'Audio'                                 => 'Вбудоване аудіо',
+    'Video'                                 => 'Вбудоване відео',
+    'Height'                                => 'Висота (мм)',
+    'Width'                                 => 'Ширина (мм)',
 
     // Manufacturers
     'Manufacturers'                         => 'Виробники',
@@ -49,4 +62,9 @@ return [
     'External Ports'                        => 'Зовнішні роз\'єми',
     'Create External Port'                  => 'Додати роз\'єм',
     'Update External Port: {nameAttribute}' => 'Оновити роз\'єм: {nameAttribute}',
+
+    //Motherboards
+    'Motherboards'                          => 'Материнські плати',
+    'Create Motherboard'                    => 'Додати плату',
+    'Update Motherboard: {nameAttribute}'   => 'Оновити плату: {nameAttribute}',
 ];
