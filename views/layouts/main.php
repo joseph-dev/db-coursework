@@ -49,8 +49,8 @@ AppAsset::register($this);
                 <div class="list-group">
                     <a href="<?= Url::to(['/']); ?>" class="list-group-item <?= $activeMenuItem === 'home' ? 'active' : '' ?>">Головна</a>
                     <a href="<?= Url::to(['manufacturer/index']); ?>" class="list-group-item <?= $activeMenuItem === 'manufacturer' ? 'active' : '' ?>">Виробники</a>
-                    <a href="<?= Url::to(['form-factor/index']); ?>" class="list-group-item <?= $activeMenuItem === 'form-factor' ? 'active' : '' ?>">Форм фактори</a>
-                    <a href="<?= Url::to(['chipset/index']); ?>" class="list-group-item <?= $activeMenuItem === 'chipset' ? 'active' : '' ?>">Чіпсети</a>
+                    <a href="<?= Url::to(['form-factor/index']); ?>" class="list-group-item <?= $activeMenuItem === 'form-factor' ? 'active' : '' ?>">Форм-фактори</a>
+                    <a href="<?= Url::to(['chipset/index']); ?>" class="list-group-item <?= $activeMenuItem === 'chipset' ? 'active' : '' ?>">Чипсети</a>
                     <a href="<?= Url::to(['socket/index']); ?>" class="list-group-item <?= $activeMenuItem === 'socket' ? 'active' : '' ?>">Сокети</a>
                     <a href="<?= Url::to(['ram-type/index']); ?>" class="list-group-item <?= $activeMenuItem === 'ram-type' ? 'active' : '' ?>">Типи оперативної пам'яті</a>
                     <a href="<?= Url::to(['slot/index']); ?>" class="list-group-item <?= $activeMenuItem === 'slot' ? 'active' : '' ?>">Слоти</a>

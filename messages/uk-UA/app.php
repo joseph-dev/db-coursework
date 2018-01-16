@@ -34,9 +34,9 @@ return [
     'Update Form Factor: {nameAttribute}'   => 'Оновити форм-фактор: {nameAttribute}',
 
     //Chipsets
-    'Chipsets'                              => 'Чіпсети',
-    'Create Chipset'                        => 'Додати чіпсет',
-    'Update Chipset: {nameAttribute}'       => 'Оновити чіпсет: {nameAttribute}',
+    'Chipsets'                              => 'Чипсети',
+    'Create Chipset'                        => 'Додати чипсет',
+    'Update Chipset: {nameAttribute}'       => 'Оновити чипсет: {nameAttribute}',
 
     //Sockets
     'Sockets'                               => 'Сокети',

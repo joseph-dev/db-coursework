@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
         'language'      => 'uk',
         'options'       => [
             'value'       => $activeChipsets,
-            'placeholder' => '-- Виберіть чіпсети --',
+            'placeholder' => '-- Виберіть чипсети --',
             'multiple'    => true
         ],
         'showToggleAll' => false,

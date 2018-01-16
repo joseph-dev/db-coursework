@@ -2,14 +2,14 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'Курсова робота!';
+$this->title = 'Курсовий проект!';
 ?>
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Курсова робота!</h1>
+        <h1>Курсовий проект!</h1>
 
-        <p class="lead">На тему: "Материнські плати та їх базові характеристики"</p>
+        <p class="lead">На тему: "Моделі та базові характеристики материнських плат"</p>
     </div>
 
     <div class="body-content">
